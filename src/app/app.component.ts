@@ -14,7 +14,11 @@ export class AppComponent implements OnInit, OnDestroy {
   public populationInfoList: PopulationInfoModel[];
   public populationListSubscription: Subscription;
 
-  public options;
+  public chartOptions;
+  public filterPopulationOptions = {
+    drilldowns: 'Nation',
+    measures: 'Population'
+  };
 
   constructor(private apiDataUsaService: ApiDataUsaService) { }
 
@@ -28,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private getPopulationDataInUSA(): void {
 
-    this.apiDataUsaService.getPopulationDataInUSA('Nation', 'Population')
+    this.apiDataUsaService.getPopulationDataInUSA(this.filterPopulationOptions.drilldowns, this.filterPopulationOptions.measures)
       .subscribe(populationResult => {
 
         const data = populationResult?.data;
@@ -51,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     const population = this.populationInfoList.map(g => g.population);
 
-    this.options = {
+    this.chartOptions = {
       legend: {
         data: ['Population U.S.A. by year'],
         align: 'left',

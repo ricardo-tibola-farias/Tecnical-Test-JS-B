@@ -1,12 +1,19 @@
-import { TestBed, async } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+
+  let app: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientModule
       ],
       declarations: [
         AppComponent
@@ -14,22 +21,30 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    app = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Tecnical-Test-JS-B'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('Tecnical-Test-JS-B');
+  it(`should have filter drilldown populations options 'Nation'`, () => {
+    const options = app.filterPopulationOptions;
+    expect(options.drilldowns).toEqual('Nation');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  it(`should have filter measures populations options 'Population'`, () => {
+    const options = app.filterPopulationOptions;
+    expect(options.measures).toEqual('Population');
+  });
+
+  it(`should have margin equal '24px 48px'`, () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('Tecnical-Test-JS-B app is running!');
+    const element = fixture.debugElement.query(By.css('.chart-container')).nativeElement as HTMLDivElement;
+    expect((getComputedStyle(element)).margin).toEqual('24px 48px');
   });
 });
